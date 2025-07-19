@@ -12,7 +12,7 @@ import {
   getErrorMessage,
   isNodeError,
   unescapePath,
-} from '@google/gemini-cli-core';
+} from '@darbotlabs/dg-cli-core';
 import {
   HistoryItem,
   IndividualToolCallDisplay,

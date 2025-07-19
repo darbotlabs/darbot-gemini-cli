@@ -19,7 +19,7 @@ import {
   TelemetryTarget,
   MCPServerConfig,
   IDE_SERVER_NAME,
-} from '@google/gemini-cli-core';
+} from '@darbotlabs/dg-cli-core';
 import { Settings } from './settings.js';
 
 import { Extension, annotateActiveExtensions } from './extension.js';
@@ -63,10 +63,10 @@ export interface CliArgs {
 
 export async function parseArguments(): Promise<CliArgs> {
   const yargsInstance = yargs(hideBin(process.argv))
-    .scriptName('gemini')
+    .scriptName('dg-cli')
     .usage(
       '$0 [options]',
-      'Gemini CLI - Launch an interactive CLI, use -p/--prompt for non-interactive mode',
+      'DG-CLI (Darbot Gemini CLI) - Launch an interactive CLI, use -p/--prompt for non-interactive mode',
     )
     .option('model', {
       alias: 'm',
@@ -341,7 +341,7 @@ export async function loadCliConfig(
         `Ignoring user-defined MCP server config for "${IDE_SERVER_NAME}" as it is a reserved name.`,
       );
     }
-    const companionPort = process.env.GEMINI_CLI_IDE_SERVER_PORT;
+    const companionPort = process.env.DG_CLI_IDE_SERVER_PORT;
     if (companionPort) {
       const httpUrl = `http://localhost:${companionPort}/mcp`;
       mcpServers[IDE_SERVER_NAME] = new MCPServerConfig(

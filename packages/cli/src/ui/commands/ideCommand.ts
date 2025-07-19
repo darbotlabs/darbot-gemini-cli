@@ -12,7 +12,7 @@ import {
   IDE_SERVER_NAME,
   MCPDiscoveryState,
   MCPServerStatus,
-} from '@google/gemini-cli-core';
+} from '@darbotlabs/dg-cli-core';
 import {
   CommandContext,
   SlashCommand,

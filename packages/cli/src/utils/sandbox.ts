@@ -15,7 +15,7 @@ import {
   SETTINGS_DIRECTORY_NAME,
 } from '../config/settings.js';
 import { promisify } from 'util';
-import { SandboxConfig } from '@google/gemini-cli-core';
+import { SandboxConfig } from '@darbotlabs/dg-cli-core';
 
 const execAsync = promisify(exec);
 
@@ -621,7 +621,7 @@ export async function start_sandbox(
   let userFlag = '';
   const finalEntrypoint = entrypoint(workdir);
 
-  if (process.env.GEMINI_CLI_INTEGRATION_TEST === 'true') {
+  if (process.env.DG_CLI_INTEGRATION_TEST === 'true') {
     args.push('--user', 'root');
     userFlag = '--user root';
   } else if (await shouldUseCurrentUserInSandbox()) {

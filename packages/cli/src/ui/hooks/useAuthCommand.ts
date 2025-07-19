@@ -12,7 +12,7 @@ import {
   clearCachedCredentialFile,
   getErrorMessage,
   shouldAttemptBrowserLaunch,
-} from '@google/gemini-cli-core';
+} from '@darbotlabs/dg-cli-core';
 import { runExitCleanup } from '../../utils/cleanup.js';
 
 export const useAuthCommand = (

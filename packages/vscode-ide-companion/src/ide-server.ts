@@ -16,7 +16,7 @@ import {
 import { Server as HTTPServer } from 'node:http';
 
 const MCP_SESSION_ID_HEADER = 'mcp-session-id';
-const IDE_SERVER_PORT_ENV_VAR = 'GEMINI_CLI_IDE_SERVER_PORT';
+const IDE_SERVER_PORT_ENV_VAR = 'DG_CLI_IDE_SERVER_PORT';
 
 function sendActiveFileChangedNotification(
   transport: StreamableHTTPServerTransport,
@@ -204,7 +204,7 @@ export class IDEServer {
 const createMcpServer = () => {
   const server = new McpServer(
     {
-      name: 'gemini-cli-companion-mcp-server',
+      name: 'dg-cli-companion-mcp-server',
       version: '1.0.0',
     },
     { capabilities: { logging: {} } },
