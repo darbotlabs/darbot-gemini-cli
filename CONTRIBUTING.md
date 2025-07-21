@@ -1,27 +1,16 @@
 # How to Contribute
 
-We would love to accept your patches and contributions to this project.
+We would love to accept your patches and contributions to the DG-CLI (Darbot Gemini CLI) project.
 
 ## Before you begin
 
-### Sign our Contributor License Agreement
+### Contributing Guidelines
 
-Contributions to this project must be accompanied by a
-[Contributor License Agreement](https://cla.developers.google.com/about) (CLA).
-You (or your employer) retain the copyright to your contribution; this simply
-gives us permission to use and redistribute your contributions as part of the
-project.
-
-If you or your current employer have already signed the Google CLA (even if it
-was for a different project), you probably don't need to do it again.
-
-Visit <https://cla.developers.google.com/> to see your current agreements or to
-sign a new one.
+Contributions to this project should follow standard open source practices. By contributing to this project, you agree that your contributions will be licensed under the same license as the project.
 
 ### Review our Community Guidelines
 
-This project follows [Google's Open Source Community
-Guidelines](https://opensource.google/conduct/).
+This project follows standard open source community guidelines focused on creating a welcoming and inclusive environment for all contributors.
 
 ## Contribution Process
 

@@ -1,13 +1,13 @@
 {
-  "name": "gemini-cli-vscode-ide-companion",
-  "displayName": "Gemini CLI VSCode IDE Companion",
-  "description": "",
+  "name": "dg-cli-vscode-ide-companion",
+  "displayName": "DG-CLI VSCode IDE Companion",
+  "description": "Darbot Gemini CLI Visual Studio Code Extension",
   "version": "0.0.1",
-  "publisher": "google",
+  "publisher": "darbotlabs",
   "icon": "assets/icon.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/google-gemini/gemini-cli.git",
+    "url": "https://github.com/darbotlabs/darbot-gemini-cli.git",
     "directory": "packages/vscode-ide-companion"
   },
   "engines": {

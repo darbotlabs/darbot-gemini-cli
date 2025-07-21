@@ -7,7 +7,7 @@
 import React from 'react';
 import { Text } from 'ink';
 import { Colors } from '../colors.js';
-import { type ActiveFile, type MCPServerConfig } from '@google/gemini-cli-core';
+import { type ActiveFile, type MCPServerConfig } from '@darbotlabs/dg-cli-core';
 import path from 'path';
 
 interface ContextSummaryDisplayProps {

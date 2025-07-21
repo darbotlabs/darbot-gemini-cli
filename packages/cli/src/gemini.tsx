@@ -38,7 +38,7 @@ import {
   AuthType,
   getOauthClient,
   shouldAttemptBrowserLaunch,
-} from '@google/gemini-cli-core';
+} from '@darbotlabs/dg-cli-core';
 import { validateAuthMethod } from './config/auth.js';
 import { setMaxSizedBoxDebugging } from './ui/components/shared/MaxSizedBox.js';
 
@@ -57,7 +57,7 @@ function getNodeMemoryArgs(config: Config): string[] {
     );
   }
 
-  if (process.env.GEMINI_CLI_NO_RELAUNCH) {
+  if (process.env.DG_CLI_NO_RELAUNCH) {
     return [];
   }
 
@@ -75,7 +75,7 @@ function getNodeMemoryArgs(config: Config): string[] {
 
 async function relaunchWithAdditionalArgs(additionalArgs: string[]) {
   const nodeArgs = [...additionalArgs, ...process.argv.slice(1)];
-  const newEnv = { ...process.env, GEMINI_CLI_NO_RELAUNCH: 'true' };
+  const newEnv = { ...process.env, DG_CLI_NO_RELAUNCH: 'true' };
 
   const child = spawn(process.execPath, nodeArgs, {
     stdio: 'inherit',

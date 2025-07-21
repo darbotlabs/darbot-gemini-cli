@@ -1,10 +1,10 @@
 {
-  "name": "@google/gemini-cli-core",
+  "name": "@darbotlabs/dg-cli-core",
   "version": "0.1.12",
-  "description": "Gemini CLI Core",
+  "description": "Darbot Gemini CLI Core - DG-CLI",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/google-gemini/gemini-cli.git"
+    "url": "git+https://github.com/darbotlabs/darbot-gemini-cli.git"
   },
   "type": "module",
   "main": "dist/index.js",

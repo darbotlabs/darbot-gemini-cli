@@ -15,7 +15,7 @@ import {
   SETTINGS_DIRECTORY_NAME,
 } from '../config/settings.js';
 import { promisify } from 'util';
-import { SandboxConfig } from '@google/gemini-cli-core';
+import { SandboxConfig } from '@darbotlabs/dg-cli-core';
 
 const execAsync = promisify(exec);
 
@@ -354,8 +354,8 @@ export async function start_sandbox(
   if (!(await ensureSandboxImageIsPresent(config.command, image))) {
     const remedy =
       image === LOCAL_DEV_SANDBOX_IMAGE_NAME
-        ? 'Try running `npm run build:all` or `npm run build:sandbox` under the gemini-cli repo to build it locally, or check the image name and your network connection.'
-        : 'Please check the image name, your network connection, or notify gemini-cli-dev@google.com if the issue persists.';
+        ? 'Try running `npm run build:all` or `npm run build:sandbox` under the dg-cli repo to build it locally, or check the image name and your network connection.'
+        : 'Please check the image name, your network connection, or file an issue at https://github.com/darbotlabs/darbot-gemini-cli if the issue persists.';
     console.error(
       `ERROR: Sandbox image '${image}' is missing or could not be pulled. ${remedy}`,
     );
@@ -621,7 +621,7 @@ export async function start_sandbox(
   let userFlag = '';
   const finalEntrypoint = entrypoint(workdir);
 
-  if (process.env.GEMINI_CLI_INTEGRATION_TEST === 'true') {
+  if (process.env.DG_CLI_INTEGRATION_TEST === 'true') {
     args.push('--user', 'root');
     userFlag = '--user root';
   } else if (await shouldUseCurrentUserInSandbox()) {

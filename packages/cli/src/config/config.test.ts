@@ -9,7 +9,7 @@ import * as os from 'os';
 import { loadCliConfig, parseArguments } from './config.js';
 import { Settings } from './settings.js';
 import { Extension } from './extension.js';
-import * as ServerConfig from '@google/gemini-cli-core';
+import * as ServerConfig from '@darbotlabs/dg-cli-core';
 
 vi.mock('os', async (importOriginal) => {
   const actualOs = await importOriginal<typeof os>();
@@ -29,9 +29,9 @@ vi.mock('read-package-up', () => ({
   ),
 }));
 
-vi.mock('@google/gemini-cli-core', async () => {
+vi.mock('@darbotlabs/dg-cli-core', async () => {
   const actualServer = await vi.importActual<typeof ServerConfig>(
-    '@google/gemini-cli-core',
+    '@darbotlabs/dg-cli-core',
   );
   return {
     ...actualServer,
@@ -907,7 +907,7 @@ describe('loadCliConfig ideMode', () => {
     // Explicitly delete TERM_PROGRAM and SANDBOX before each test
     delete process.env.TERM_PROGRAM;
     delete process.env.SANDBOX;
-    delete process.env.GEMINI_CLI_IDE_SERVER_PORT;
+    delete process.env.DG_CLI_IDE_SERVER_PORT;
   });
 
   afterEach(() => {
@@ -944,7 +944,7 @@ describe('loadCliConfig ideMode', () => {
     process.argv = ['node', 'script.js', '--ide-mode'];
     const argv = await parseArguments();
     process.env.TERM_PROGRAM = 'vscode';
-    process.env.GEMINI_CLI_IDE_SERVER_PORT = '3000';
+    process.env.DG_CLI_IDE_SERVER_PORT = '3000';
     const settings: Settings = {};
     const config = await loadCliConfig(settings, [], 'test-session', argv);
     expect(config.getIdeMode()).toBe(true);
@@ -954,7 +954,7 @@ describe('loadCliConfig ideMode', () => {
     process.argv = ['node', 'script.js'];
     const argv = await parseArguments();
     process.env.TERM_PROGRAM = 'vscode';
-    process.env.GEMINI_CLI_IDE_SERVER_PORT = '3000';
+    process.env.DG_CLI_IDE_SERVER_PORT = '3000';
     const settings: Settings = { ideMode: true };
     const config = await loadCliConfig(settings, [], 'test-session', argv);
     expect(config.getIdeMode()).toBe(true);
@@ -964,7 +964,7 @@ describe('loadCliConfig ideMode', () => {
     process.argv = ['node', 'script.js', '--ide-mode'];
     const argv = await parseArguments();
     process.env.TERM_PROGRAM = 'vscode';
-    process.env.GEMINI_CLI_IDE_SERVER_PORT = '3000';
+    process.env.DG_CLI_IDE_SERVER_PORT = '3000';
     const settings: Settings = { ideMode: false };
     const config = await loadCliConfig(settings, [], 'test-session', argv);
     expect(config.getIdeMode()).toBe(true);
@@ -1003,7 +1003,7 @@ describe('loadCliConfig ideMode', () => {
     process.argv = ['node', 'script.js', '--ide-mode'];
     const argv = await parseArguments();
     process.env.TERM_PROGRAM = 'vscode';
-    process.env.GEMINI_CLI_IDE_SERVER_PORT = '3000';
+    process.env.DG_CLI_IDE_SERVER_PORT = '3000';
     const settings: Settings = {};
     const config = await loadCliConfig(settings, [], 'test-session', argv);
     expect(config.getIdeMode()).toBe(true);
@@ -1038,7 +1038,7 @@ describe('loadCliConfig ideMode', () => {
     process.argv = ['node', 'script.js', '--ide-mode'];
     const argv = await parseArguments();
     process.env.TERM_PROGRAM = 'vscode';
-    process.env.GEMINI_CLI_IDE_SERVER_PORT = '3000';
+    process.env.DG_CLI_IDE_SERVER_PORT = '3000';
     const settings: Settings = {
       mcpServers: {
         _ide_server: new ServerConfig.MCPServerConfig(
