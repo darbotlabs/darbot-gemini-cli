@@ -4,7 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export const shortAsciiLogo = `
+export const shortAsciiLogo = (() => {
+    const isUtf8 = process.env.LANG?.includes('UTF-8');
+    const terminalWidth = process.stdout.columns || 80;
+    const utf8Banner = `
 ██████╗  ██████╗      ██████╗██╗     ██╗
 ██╔══██╗██╔════╝     ██╔════╝██║     ██║
 ██║  ██║██║  ███╗    ██║     ██║     ██║
