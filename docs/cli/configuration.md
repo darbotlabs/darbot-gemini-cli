@@ -24,7 +24,7 @@ DG-CLI uses `settings.json` files for persistent configuration. There are three 
   - **Location:** `.gemini/settings.json` within your project's root directory.
   - **Scope:** Applies only when running DG-CLI from that specific project. Project settings override user settings.
 - **System settings file:**
-  - **Location:** `/etc/gemini-cli/settings.json` (Linux), `C:\ProgramData\gemini-cli\settings.json` (Windows) or `/Library/Application Support/GeminiCli/settings.json` (macOS).
+  - **Location:** `/etc/dg-cli/settings.json` (Linux), `C:\ProgramData\dg-cli\settings.json` (Windows) or `/Library/Application Support/DgCli/settings.json` (macOS).
   - **Scope:** Applies to all DG-CLI sessions on the system, for all users. System settings override user and project settings. May be useful for system administrators at enterprises to have controls over users' DG-CLI setups.
 
 **Note on environment variables in settings:** String values within your `settings.json` files can reference environment variables using either `$VAR_NAME` or `${VAR_NAME}` syntax. These variables will be automatically resolved when the settings are loaded. For example, if you have an environment variable `MY_API_TOKEN`, you could use it in `settings.json` like this: `"apiKey": "$MY_API_TOKEN"`.
@@ -104,7 +104,7 @@ In addition to a project settings file, a project's `.gemini` directory can cont
   - **Example:** `"theme": "GitHub"`
 
 - **`sandbox`** (boolean or string):
-  - **Description:** Controls whether and how to use sandboxing for tool execution. If set to `true`, DG-CLI uses a pre-built `gemini-cli-sandbox` Docker image. For more information, see [Sandboxing](#sandboxing).
+  - **Description:** Controls whether and how to use sandboxing for tool execution. If set to `true`, DG-CLI uses a pre-built `dg-cli-sandbox` Docker image. For more information, see [Sandboxing](#sandboxing).
   - **Default:** `false`
   - **Example:** `"sandbox": "docker"`
 
@@ -445,12 +445,12 @@ Sandboxing is disabled by default, but you can enable it in a few ways:
 - Setting `GEMINI_SANDBOX` environment variable.
 - Sandbox is enabled in `--yolo` mode by default.
 
-By default, it uses a pre-built `gemini-cli-sandbox` Docker image.
+By default, it uses a pre-built `dg-cli-sandbox` Docker image.
 
 For project-specific sandboxing needs, you can create a custom Dockerfile at `.gemini/sandbox.Dockerfile` in your project's root directory. This Dockerfile can be based on the base sandbox image:
 
 ```dockerfile
-FROM gemini-cli-sandbox
+FROM dg-cli-sandbox
 
 # Add your custom dependencies or configurations here
 # For example:

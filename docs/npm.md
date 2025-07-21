@@ -148,7 +148,7 @@ This command will do the following:
 3.  Create the package tarballs that would be published to npm.
 4.  Print a summary of the packages that would be published.
 
-You can then inspect the generated tarballs to ensure that they contain the correct files and that the `package.json` files have been updated correctly. The tarballs will be created in the root of each package's directory (e.g., `packages/cli/google-gemini-cli-0.1.6.tgz`).
+You can then inspect the generated tarballs to ensure that they contain the correct files and that the `package.json` files have been updated correctly. The tarballs will be created in the root of each package's directory (e.g., `packages/cli/darbotlabs-dg-cli-0.1.6.tgz`).
 
 By performing a dry run, you can be confident that your changes to the packaging process are correct and that the packages will be published successfully.
 
@@ -187,7 +187,7 @@ This is the most critical stage where files are moved and transformed into their
     - File movement: packages/cli/package.json -> (in-memory transformation) -> `bundle`/package.json
     - Why: The final package.json must be different from the one used in development. Key changes include:
       - Removing devDependencies.
-      - Removing workspace-specific "dependencies": { "@gemini-cli/core": "workspace:\*" } and ensuring the core code is
+      - Removing workspace-specific "dependencies": { "@darbotlabs/dg-cli-core": "workspace:\*" } and ensuring the core code is
         bundled directly into the final JavaScript file.
       - Ensuring the bin, main, and files fields point to the correct locations within the final package structure.
 

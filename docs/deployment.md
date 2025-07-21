@@ -21,7 +21,7 @@ This is the recommended way for end-users to install DG-CLI. It involves downloa
   Then, run the CLI from anywhere:
 
   ```bash
-  gemini
+  dg-cli
   ```
 
 - **NPX execution:**
@@ -41,12 +41,12 @@ For security and isolation, DG-CLI can be run inside a container. This is the de
   You can run the published sandbox image directly. This is useful for environments where you only have Docker and want to run the CLI.
   ```bash
   # Run the published sandbox image
-  docker run --rm -it us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.1.1
+  docker run --rm -it us-docker.pkg.dev/gemini-code-dev/dg-cli/sandbox:0.1.1
   ```
 - **Using the `--sandbox` flag:**
   If you have DG-CLI installed locally (using the standard installation described above), you can instruct it to run inside the sandbox container.
   ```bash
-  gemini --sandbox -y -p "your prompt here"
+  dg-cli --sandbox -y -p "your prompt here"
   ```
 
 ---
@@ -106,7 +106,7 @@ There are two distinct build processes used, depending on the distribution chann
 
 **Docker sandbox image**
 
-The Docker-based execution method is supported by the `gemini-cli-sandbox` container image. This image is published to a container registry and contains a pre-installed, global version of DG-CLI.
+The Docker-based execution method is supported by the `dg-cli-sandbox` container image. This image is published to a container registry and contains a pre-installed, global version of DG-CLI.
 
 ## Release process
 

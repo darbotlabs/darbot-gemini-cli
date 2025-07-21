@@ -2,7 +2,7 @@
 
 [![DG-CLI CI](https://github.com/darbotlabs/darbot-gemini-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/darbotlabs/darbot-gemini-cli/actions/workflows/ci.yml)
 
-![DG-CLI Screenshot](./docs/assets/gemini-screenshot.png)
+![DG-CLI Screenshot](./docs/assets/dg-cli-screenshot.png)
 
 This repository contains the DG-CLI (Darbot Gemini CLI), a command-line AI workflow tool that connects to your
 tools, understands your code and accelerates your workflows.
