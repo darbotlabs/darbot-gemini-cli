@@ -1,15 +1,10 @@
-/**
- * @license
- * Copyright 2025 Google LLC
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import * as fs from 'fs';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import * as fsPromises from 'fs/promises';
 import * as gitUtils from './gitUtils.js';
 import { bfsFileSearch } from './bfsFileSearch.js';
 import { FileDiscoveryService } from '../services/fileDiscoveryService.js';
+import * as path from 'path';
 
 vi.mock('fs');
 vi.mock('fs/promises');
@@ -43,40 +38,40 @@ describe('bfsFileSearch', () => {
     ]);
 
     const result = await bfsFileSearch('/test', { fileName: 'file1.txt' });
-    expect(result).toEqual(['/test/file1.txt']);
+    expect(result).toEqual([path.join('/test', 'file1.txt')]);
   });
 
   it('should find a file in a subdirectory', async () => {
     const mockFs = vi.mocked(fsPromises);
     const mockReaddir = mockFs.readdir as unknown as ReaddirWithFileTypes;
     vi.mocked(mockReaddir).mockImplementation(async (dir) => {
-      if (dir === '/test') {
+      if (dir === path.normalize('/test')) {
         return [createMockDirent('subdir', false)];
       }
-      if (dir === '/test/subdir') {
+      if (dir === path.join('/test', 'subdir')) {
         return [createMockDirent('file1.txt', true)];
       }
       return [];
     });
 
     const result = await bfsFileSearch('/test', { fileName: 'file1.txt' });
-    expect(result).toEqual(['/test/subdir/file1.txt']);
+    expect(result).toEqual([path.join('/test', 'subdir', 'file1.txt')]);
   });
 
   it('should ignore specified directories', async () => {
     const mockFs = vi.mocked(fsPromises);
     const mockReaddir = mockFs.readdir as unknown as ReaddirWithFileTypes;
     vi.mocked(mockReaddir).mockImplementation(async (dir) => {
-      if (dir === '/test') {
+      if (dir === path.normalize('/test')) {
         return [
           createMockDirent('subdir1', false),
           createMockDirent('subdir2', false),
         ];
       }
-      if (dir === '/test/subdir1') {
+      if (dir === path.join('/test', 'subdir1')) {
         return [createMockDirent('file1.txt', true)];
       }
-      if (dir === '/test/subdir2') {
+      if (dir === path.join('/test', 'subdir2')) {
         return [createMockDirent('file1.txt', true)];
       }
       return [];
@@ -86,23 +81,23 @@ describe('bfsFileSearch', () => {
       fileName: 'file1.txt',
       ignoreDirs: ['subdir2'],
     });
-    expect(result).toEqual(['/test/subdir1/file1.txt']);
+    expect(result).toEqual([path.join('/test', 'subdir1', 'file1.txt')]);
   });
 
   it('should respect maxDirs limit', async () => {
     const mockFs = vi.mocked(fsPromises);
     const mockReaddir = mockFs.readdir as unknown as ReaddirWithFileTypes;
     vi.mocked(mockReaddir).mockImplementation(async (dir) => {
-      if (dir === '/test') {
+      if (dir === path.normalize('/test')) {
         return [
           createMockDirent('subdir1', false),
           createMockDirent('subdir2', false),
         ];
       }
-      if (dir === '/test/subdir1') {
+      if (dir === path.join('/test', 'subdir1')) {
         return [createMockDirent('file1.txt', true)];
       }
-      if (dir === '/test/subdir2') {
+      if (dir === path.join('/test', 'subdir2')) {
         return [createMockDirent('file1.txt', true)];
       }
       return [];
@@ -112,7 +107,7 @@ describe('bfsFileSearch', () => {
       fileName: 'file1.txt',
       maxDirs: 2,
     });
-    expect(result).toEqual(['/test/subdir1/file1.txt']);
+    expect(result).toEqual([path.join('/test', 'subdir1', 'file1.txt')]);
   });
 
   it('should respect .gitignore files', async () => {
@@ -121,17 +116,17 @@ describe('bfsFileSearch', () => {
     mockGitUtils.isGitRepository.mockReturnValue(true);
     const mockReaddir = mockFs.readdir as unknown as ReaddirWithFileTypes;
     vi.mocked(mockReaddir).mockImplementation(async (dir) => {
-      if (dir === '/test') {
+      if (dir === path.normalize('/test')) {
         return [
           createMockDirent('.gitignore', true),
           createMockDirent('subdir1', false),
           createMockDirent('subdir2', false),
         ];
       }
-      if (dir === '/test/subdir1') {
+      if (dir === path.join('/test', 'subdir1')) {
         return [createMockDirent('file1.txt', true)];
       }
-      if (dir === '/test/subdir2') {
+      if (dir === path.join('/test', 'subdir2')) {
         return [createMockDirent('file1.txt', true)];
       }
       return [];
@@ -143,6 +138,6 @@ describe('bfsFileSearch', () => {
       fileName: 'file1.txt',
       fileService,
     });
-    expect(result).toEqual(['/test/subdir1/file1.txt']);
+    expect(result).toEqual([path.join('/test', 'subdir1', 'file1.txt')]);
   });
 });

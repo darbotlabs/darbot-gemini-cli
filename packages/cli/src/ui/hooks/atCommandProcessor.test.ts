@@ -410,7 +410,7 @@ describe('handleAtCommand', () => {
     const invalidFile = 'nonexistent.txt';
     const query = `Look at @${file1} then @${invalidFile} and also just @ symbol, then @valid2.glob`;
     const file2Glob = 'valid2.glob';
-    const resolvedFile2 = 'resolved/valid2.actual';
+    const resolvedFile2 = require('path').join('resolved', 'valid2.actual');
     const content2 = 'Globbed content';
 
     // Mock fs.stat for file1 (valid)

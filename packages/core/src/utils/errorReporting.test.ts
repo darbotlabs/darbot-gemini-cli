@@ -1,9 +1,3 @@
-/**
- * @license
- * Copyright 2025 Google LLC
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
 
 // Use a type alias for SpyInstance as it's not directly exported
@@ -11,6 +5,7 @@ type SpyInstance = ReturnType<typeof vi.spyOn>;
 import { reportError } from './errorReporting.js';
 import fs from 'node:fs/promises';
 import os from 'node:os';
+import * as path from 'node:path';
 
 // Mock dependencies
 vi.mock('node:fs/promises');
@@ -18,7 +13,7 @@ vi.mock('node:os');
 
 describe('reportError', () => {
   let consoleErrorSpy: SpyInstance;
-  const MOCK_TMP_DIR = '/tmp';
+  const MOCK_TMP_DIR = path.normalize('/tmp');
   const MOCK_TIMESTAMP = '2025-01-01T00-00-00-000Z';
 
   beforeEach(() => {
@@ -33,7 +28,7 @@ describe('reportError', () => {
   });
 
   const getExpectedReportPath = (type: string) =>
-    `${MOCK_TMP_DIR}/gemini-client-error-${type}-${MOCK_TIMESTAMP}.json`;
+    path.join(MOCK_TMP_DIR, `dg-client-error-${type}-${MOCK_TIMESTAMP}.json`);
 
   it('should generate a report and log the path', async () => {
     const error = new Error('Test error');

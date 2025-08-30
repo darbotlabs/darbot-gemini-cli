@@ -34,6 +34,7 @@ export default tseslint.config(
       'packages/core/dist/**',
       'packages/server/dist/**',
       'packages/vscode-ide-companion/dist/**',
+      'packages/dg-cli-vscode/dist/**',
       'eslint-rules/*',
       'bundle/**',
     ],
@@ -178,6 +179,20 @@ export default tseslint.config(
   },
   {
     files: ['packages/vscode-ide-companion/esbuild.js'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        process: 'readonly',
+        console: 'readonly',
+      },
+    },
+    rules: {
+      'no-restricted-syntax': 'off',
+      '@typescript-eslint/no-require-imports': 'off',
+    },
+  },
+  {
+    files: ['packages/dg-cli-vscode/esbuild.js'],
     languageOptions: {
       globals: {
         ...globals.node,

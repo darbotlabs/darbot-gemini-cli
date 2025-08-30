@@ -25,7 +25,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 export function deactivate() {
   if (ideServer) {
-    logger.appendLine('Deactivating Gemini CLI IDE Companion...');
+    logger.appendLine('Deactivating DG-CLI VSCode...');
     return ideServer.stop().finally(() => {
       logger.dispose();
     });

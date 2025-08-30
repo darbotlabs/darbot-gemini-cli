@@ -35,7 +35,7 @@ execSync('npm run generate', { stdio: 'inherit', cwd: root });
 execSync('npm run build --workspaces', { stdio: 'inherit', cwd: root });
 execSync('npx --yes @vscode/vsce package --no-dependencies', {
   stdio: 'inherit',
-  cwd: join(root, 'packages', 'vscode-ide-companion'),
+  cwd: join(root, 'packages', 'dg-cli-vscode'),
 });
 
 // also build container image if sandboxing is enabled

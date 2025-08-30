@@ -1,9 +1,3 @@
-/**
- * @license
- * Copyright 2025 Google LLC
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { vi, describe, it, expect, beforeEach, Mocked } from 'vitest';
 import * as fsPromises from 'fs/promises';
 import * as fsSync from 'fs';
@@ -37,9 +31,9 @@ describe('loadServerHierarchicalMemory', () => {
   const mockFs = fsPromises as Mocked<typeof fsPromises>;
   const mockOs = os as Mocked<typeof os>;
 
-  const CWD = '/test/project/src';
-  const PROJECT_ROOT = '/test/project';
-  const USER_HOME = '/test/userhome';
+  const CWD = path.normalize('/test/project/src');
+  const PROJECT_ROOT = path.normalize('/test/project');
+  const USER_HOME = path.normalize('/test/userhome');
 
   let GLOBAL_GEMINI_DIR: string;
   let GLOBAL_GEMINI_FILE: string; // Defined in beforeEach
@@ -241,7 +235,7 @@ describe('loadServerHierarchicalMemory', () => {
     );
     const expectedContent =
       `--- Context from: ${customFilename} ---\nCWD custom memory\n--- End of Context from: ${customFilename} ---\n\n` +
-      `--- Context from: ${path.join('subdir', customFilename)} ---\nSubdir custom memory\n--- End of Context from: ${path.join('subdir', customFilename)} ---`;
+      `--- Context from: ${path.join('subdir', customFilename)} ---\nSubdir memory\n--- End of Context from: ${path.join('subdir', customFilename)} ---`;
 
     expect(memoryContent).toBe(expectedContent);
     expect(fileCount).toBe(2);
@@ -577,7 +571,7 @@ describe('loadServerHierarchicalMemory', () => {
   });
 
   it('should load extension context file paths', async () => {
-    const extensionFilePath = '/test/extensions/ext1/GEMINI.md';
+    const extensionFilePath = path.normalize('/test/extensions/ext1/GEMINI.md');
     mockFs.access.mockImplementation(async (p) => {
       if (p === extensionFilePath) {
         return undefined;

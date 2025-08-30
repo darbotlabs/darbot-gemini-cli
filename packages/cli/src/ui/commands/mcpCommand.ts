@@ -52,7 +52,8 @@ const getMcpStatus = async (
   const blockedMcpServers = config.getBlockedMcpServers() || [];
 
   if (serverNames.length === 0 && blockedMcpServers.length === 0) {
-    const docsUrl = 'https://goo.gle/gemini-cli-docs-mcp';
+    const docsUrl =
+      'https://github.com/darbotlabs/darbot-gemini-cli/blob/main/docs/tools/mcp-server.md';
     if (process.env.SANDBOX && process.env.SANDBOX !== 'sandbox-exec') {
       return {
         type: 'message',

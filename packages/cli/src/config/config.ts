@@ -18,7 +18,7 @@ import {
   FileDiscoveryService,
   TelemetryTarget,
   MCPServerConfig,
-  IDE_SERVER_NAME,
+  DG_CLI_VSCODE_SERVER_NAME,
 } from '@darbotlabs/dg-cli-core';
 import { Settings } from './settings.js';
 
@@ -336,15 +336,15 @@ export async function loadCliConfig(
   }
 
   if (ideMode) {
-    if (mcpServers[IDE_SERVER_NAME]) {
+    if (mcpServers[DG_CLI_VSCODE_SERVER_NAME]) {
       logger.warn(
-        `Ignoring user-defined MCP server config for "${IDE_SERVER_NAME}" as it is a reserved name.`,
+        `Ignoring user-defined MCP server config for "${DG_CLI_VSCODE_SERVER_NAME}" as it is a reserved name.`,
       );
     }
     const companionPort = process.env.DG_CLI_IDE_SERVER_PORT;
     if (companionPort) {
       const httpUrl = `http://localhost:${companionPort}/mcp`;
-      mcpServers[IDE_SERVER_NAME] = new MCPServerConfig(
+      mcpServers[DG_CLI_VSCODE_SERVER_NAME] = new MCPServerConfig(
         undefined, // command
         undefined, // args
         undefined, // env

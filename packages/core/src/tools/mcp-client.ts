@@ -23,7 +23,7 @@ import { FunctionDeclaration, mcpToTool } from '@google/genai';
 import { ToolRegistry } from './tool-registry.js';
 import {
   ActiveFileNotificationSchema,
-  IDE_SERVER_NAME,
+  DG_CLI_VSCODE_SERVER_NAME,
   ideContext,
 } from '../services/ideContext.js';
 
@@ -215,12 +215,12 @@ export async function connectAndDiscover(
       mcpClient.onerror = (error) => {
         console.error(`MCP ERROR (${mcpServerName}):`, error.toString());
         updateMCPServerStatus(mcpServerName, MCPServerStatus.DISCONNECTED);
-        if (mcpServerName === IDE_SERVER_NAME) {
+        if (mcpServerName === DG_CLI_VSCODE_SERVER_NAME) {
           ideContext.clearActiveFileContext();
         }
       };
 
-      if (mcpServerName === IDE_SERVER_NAME) {
+      if (mcpServerName === DG_CLI_VSCODE_SERVER_NAME) {
         mcpClient.setNotificationHandler(
           ActiveFileNotificationSchema,
           (notification) => {
@@ -314,7 +314,7 @@ export async function connectToMcpServer(
   debugMode: boolean,
 ): Promise<Client> {
   const mcpClient = new Client({
-    name: 'gemini-cli-mcp-client',
+    name: 'dg-cli-mcp-client',
     version: '0.0.1',
   });
 

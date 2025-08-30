@@ -26,6 +26,7 @@ vi.mock('@darbotlabs/dg-cli-core', async (importOriginal) => {
     await importOriginal<typeof import('@darbotlabs/dg-cli-core')>();
   return {
     ...original,
+    IDE_SERVER_NAME: 'test-ide-server',
     getMCPServerStatus: vi.fn(),
     getMCPDiscoveryState: vi.fn(),
   };
@@ -145,11 +146,12 @@ describe('ideCommand', () => {
       const command = ideCommand(mockConfig);
       await command?.subCommands?.[1].action(mockContext, '');
 
+      const codeCommand = process.platform === 'win32' ? 'code.cmd' : 'code';
       expect(mockContext.ui.addItem).toHaveBeenCalledWith(
         expect.objectContaining({
           type: 'error',
           text: expect.stringContaining(
-            'VS Code command-line tool "code" not found',
+            `VS Code command-line tool "${codeCommand}" not found`,
           ),
         }),
         expect.any(Number),
@@ -173,18 +175,19 @@ describe('ideCommand', () => {
     });
 
     it('should install the extension if found in the bundle directory', async () => {
-      const vsixPath = '/path/to/bundle/gemini.vsix';
+      const vsixPath = '/path/to/bundle/dg-cli-vscode-ide-companion-0.0.1.vsix';
       execSyncSpy.mockReturnValue(''); // VSCode is installed
       globSyncSpy.mockReturnValue([vsixPath]); // Found .vsix file
 
       const command = ideCommand(mockConfig);
       await command?.subCommands?.[1].action(mockContext, '');
 
+      const codeCommand = process.platform === 'win32' ? 'code.cmd' : 'code';
       expect(globSyncSpy).toHaveBeenCalledWith(
         expect.stringContaining('.vsix'),
       );
       expect(execSyncSpy).toHaveBeenCalledWith(
-        `code --install-extension ${vsixPath} --force`,
+        `${codeCommand} --install-extension ${vsixPath} --force`,
         { stdio: 'pipe' },
       );
       expect(mockContext.ui.addItem).toHaveBeenCalledWith(
@@ -204,7 +207,7 @@ describe('ideCommand', () => {
     });
 
     it('should install the extension if found in the dev directory', async () => {
-      const vsixPath = '/path/to/dev/gemini.vsix';
+      const vsixPath = '/path/to/dev/dg-cli-vscode-ide-companion-0.0.1.vsix';
       execSyncSpy.mockReturnValue(''); // VSCode is installed
       // First glob call for bundle returns nothing, second for dev returns path.
       globSyncSpy.mockReturnValueOnce([]).mockReturnValueOnce([vsixPath]);
@@ -212,9 +215,10 @@ describe('ideCommand', () => {
       const command = ideCommand(mockConfig);
       await command?.subCommands?.[1].action(mockContext, '');
 
+      const codeCommand = process.platform === 'win32' ? 'code.cmd' : 'code';
       expect(globSyncSpy).toHaveBeenCalledTimes(2);
       expect(execSyncSpy).toHaveBeenCalledWith(
-        `code --install-extension ${vsixPath} --force`,
+        `${codeCommand} --install-extension ${vsixPath} --force`,
         { stdio: 'pipe' },
       );
       expect(mockContext.ui.addItem).toHaveBeenCalledWith(
@@ -227,7 +231,7 @@ describe('ideCommand', () => {
     });
 
     it('should show an error if installation fails', async () => {
-      const vsixPath = '/path/to/bundle/gemini.vsix';
+      const vsixPath = '/path/to/bundle/dg-cli-vscode-ide-companion-0.0.1.vsix';
       const errorMessage = 'Installation failed';
       execSyncSpy
         .mockReturnValueOnce('') // VSCode is installed check

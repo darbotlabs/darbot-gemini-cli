@@ -1,10 +1,3 @@
-/**
- * @license
- * Copyright 2025 Google LLC
- * SPDX-License-Identifier: Apache-2.0
- */
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
 import fsPromises from 'fs/promises';
 import * as fs from 'fs';
@@ -78,158 +71,95 @@ describe('getFolderStructure', () => {
   });
 
   const mockFsStructure: Record<string, FSDirent[]> = {
-    '/testroot': [
+    [path.normalize('/testroot')]: [
       createDirent('file1.txt', 'file'),
       createDirent('subfolderA', 'dir'),
       createDirent('emptyFolder', 'dir'),
       createDirent('.hiddenfile', 'file'),
       createDirent('node_modules', 'dir'),
     ],
-    '/testroot/subfolderA': [
+    [path.normalize('/testroot/subfolderA')]: [
       createDirent('fileA1.ts', 'file'),
       createDirent('fileA2.js', 'file'),
       createDirent('subfolderB', 'dir'),
     ],
-    '/testroot/subfolderA/subfolderB': [createDirent('fileB1.md', 'file')],
-    '/testroot/emptyFolder': [],
-    '/testroot/node_modules': [createDirent('somepackage', 'dir')],
-    '/testroot/manyFilesFolder': Array.from({ length: 10 }, (_, i) =>
+    [path.normalize('/testroot/subfolderA/subfolderB')]: [createDirent('fileB1.md', 'file')],
+    [path.normalize('/testroot/emptyFolder')]: [],
+    [path.normalize('/testroot/node_modules')]: [createDirent('somepackage', 'dir')],
+    [path.normalize('/testroot/manyFilesFolder')]: Array.from({ length: 10 }, (_, i) =>
       createDirent(`file-${i}.txt`, 'file'),
     ),
-    '/testroot/manyFolders': Array.from({ length: 5 }, (_, i) =>
+    [path.normalize('/testroot/manyFolders')]: Array.from({ length: 5 }, (_, i) =>
       createDirent(`folder-${i}`, 'dir'),
     ),
     ...Array.from({ length: 5 }, (_, i) => ({
-      [`/testroot/manyFolders/folder-${i}`]: [
+      [path.normalize(`/testroot/manyFolders/folder-${i}`)]: [
         createDirent('child.txt', 'file'),
       ],
     })).reduce((acc, val) => ({ ...acc, ...val }), {}),
-    '/testroot/deepFolders': [createDirent('level1', 'dir')],
-    '/testroot/deepFolders/level1': [createDirent('level2', 'dir')],
-    '/testroot/deepFolders/level1/level2': [createDirent('level3', 'dir')],
-    '/testroot/deepFolders/level1/level2/level3': [
+    [path.normalize('/testroot/deepFolders')]: [createDirent('level1', 'dir')],
+    [path.normalize('/testroot/deepFolders/level1')]: [createDirent('level2', 'dir')],
+    [path.normalize('/testroot/deepFolders/level1/level2')]: [createDirent('level3', 'dir')],
+    [path.normalize('/testroot/deepFolders/level1/level2/level3')]: [
       createDirent('file.txt', 'file'),
     ],
   };
 
   it('should return basic folder structure', async () => {
-    const structure = await getFolderStructure('/testroot/subfolderA');
-    const expected = `
-Showing up to 200 items (files + folders).
-
-/testroot/subfolderA/
-├───fileA1.ts
-├───fileA2.js
-└───subfolderB/
-    └───fileB1.md
-`.trim();
+    const structure = await getFolderStructure(path.normalize('/testroot/subfolderA'));
+    const expected = `\nShowing up to 200 items (files + folders).\n\n${path.normalize('/testroot/subfolderA')}${path.sep}\n├───fileA1.ts\n├───fileA2.js\n└───subfolderB/\n    └───fileB1.md\n`.trim();
     expect(structure.trim()).toBe(expected);
   });
 
   it('should handle an empty folder', async () => {
-    const structure = await getFolderStructure('/testroot/emptyFolder');
-    const expected = `
-Showing up to 200 items (files + folders).
-
-/testroot/emptyFolder/
-`.trim();
+    const structure = await getFolderStructure(path.normalize('/testroot/emptyFolder'));
+    const expected = `\nShowing up to 200 items (files + folders).\n\n${path.normalize('/testroot/emptyFolder')}${path.sep}\n`.trim();
     expect(structure.trim()).toBe(expected.trim());
   });
 
   it('should ignore folders specified in ignoredFolders (default)', async () => {
-    const structure = await getFolderStructure('/testroot');
-    const expected = `
-Showing up to 200 items (files + folders). Folders or files indicated with ... contain more items not shown, were ignored, or the display limit (200 items) was reached.
-
-/testroot/
-├───.hiddenfile
-├───file1.txt
-├───emptyFolder/
-├───node_modules/...
-└───subfolderA/
-    ├───fileA1.ts
-    ├───fileA2.js
-    └───subfolderB/
-        └───fileB1.md
-`.trim();
+    const structure = await getFolderStructure(path.normalize('/testroot'));
+    const expected = `\nShowing up to 200 items (files + folders). Folders or files indicated with ... contain more items not shown, were ignored, or the display limit (200 items) was reached.\n\n${path.normalize('/testroot')}${path.sep}\n├───.hiddenfile\n├───file1.txt\n├───emptyFolder/\n├───node_modules/...\n└───subfolderA/\n    ├───fileA1.ts\n    ├───fileA2.js\n    └───subfolderB/\n        └───fileB1.md\n`.trim();
     expect(structure.trim()).toBe(expected);
   });
 
   it('should ignore folders specified in custom ignoredFolders', async () => {
-    const structure = await getFolderStructure('/testroot', {
+    const structure = await getFolderStructure(path.normalize('/testroot'), {
       ignoredFolders: new Set(['subfolderA', 'node_modules']),
     });
-    const expected = `
-Showing up to 200 items (files + folders). Folders or files indicated with ... contain more items not shown, were ignored, or the display limit (200 items) was reached.
-
-/testroot/
-├───.hiddenfile
-├───file1.txt
-├───emptyFolder/
-├───node_modules/...
-└───subfolderA/...
-`.trim();
+    const expected = `\nShowing up to 200 items (files + folders). Folders or files indicated with ... contain more items not shown, were ignored, or the display limit (200 items) was reached.\n\n${path.normalize('/testroot')}${path.sep}\n├───.hiddenfile\n├───file1.txt\n├───emptyFolder/\n├───node_modules/...\n└───subfolderA/...\n`.trim();
     expect(structure.trim()).toBe(expected);
   });
 
   it('should filter files by fileIncludePattern', async () => {
-    const structure = await getFolderStructure('/testroot/subfolderA', {
+    const structure = await getFolderStructure(path.normalize('/testroot/subfolderA'), {
       fileIncludePattern: /\.ts$/,
     });
-    const expected = `
-Showing up to 200 items (files + folders).
-
-/testroot/subfolderA/
-├───fileA1.ts
-└───subfolderB/
-`.trim();
+    const expected = `\nShowing up to 200 items (files + folders).\n\n${path.normalize('/testroot/subfolderA')}${path.sep}\n├───fileA1.ts\n└───subfolderB/\n`.trim();
     expect(structure.trim()).toBe(expected);
   });
 
   it('should handle maxItems truncation for files within a folder', async () => {
-    const structure = await getFolderStructure('/testroot/subfolderA', {
+    const structure = await getFolderStructure(path.normalize('/testroot/subfolderA'), {
       maxItems: 3,
     });
-    const expected = `
-Showing up to 3 items (files + folders).
-
-/testroot/subfolderA/
-├───fileA1.ts
-├───fileA2.js
-└───subfolderB/
-`.trim();
+    const expected = `\nShowing up to 3 items (files + folders).\n\n${path.normalize('/testroot/subfolderA')}${path.sep}\n├───fileA1.ts\n├───fileA2.js\n└───subfolderB/\n`.trim();
     expect(structure.trim()).toBe(expected);
   });
 
   it('should handle maxItems truncation for subfolders', async () => {
-    const structure = await getFolderStructure('/testroot/manyFolders', {
+    const structure = await getFolderStructure(path.normalize('/testroot/manyFolders'), {
       maxItems: 4,
     });
-    const expectedRevised = `
-Showing up to 4 items (files + folders). Folders or files indicated with ... contain more items not shown, were ignored, or the display limit (4 items) was reached.
-
-/testroot/manyFolders/
-├───folder-0/
-├───folder-1/
-├───folder-2/
-├───folder-3/
-└───...
-`.trim();
+    const expectedRevised = `\nShowing up to 4 items (files + folders). Folders or files indicated with ... contain more items not shown, were ignored, or the display limit (4 items) was reached.\n\n${path.normalize('/testroot/manyFolders')}${path.sep}\n├───folder-0/\n├───folder-1/\n├───folder-2/\n├───folder-3/\n└───...\n`.trim();
     expect(structure.trim()).toBe(expectedRevised);
   });
 
   it('should handle maxItems that only allows the root folder itself', async () => {
-    const structure = await getFolderStructure('/testroot/subfolderA', {
+    const structure = await getFolderStructure(path.normalize('/testroot/subfolderA'), {
       maxItems: 1,
     });
-    const expectedRevisedMax1 = `
-Showing up to 1 items (files + folders). Folders or files indicated with ... contain more items not shown, were ignored, or the display limit (1 items) was reached.
-
-/testroot/subfolderA/
-├───fileA1.ts
-├───...
-└───...
-`.trim();
+    const expectedRevisedMax1 = `\nShowing up to 1 items (files + folders). Folders or files indicated with ... contain more items not shown, were ignored, or the display limit (1 items) was reached.\n\n${path.normalize('/testroot/subfolderA')}${path.sep}\n├───fileA1.ts\n├───...\n└───...\n`.trim();
     expect(structure.trim()).toBe(expectedRevisedMax1);
   });
 
@@ -247,38 +177,23 @@ Showing up to 1 items (files + folders). Folders or files indicated with ... con
 
     const structure = await getFolderStructure('/nonexistent');
     expect(structure).toContain(
-      'Error: Could not read directory "/nonexistent"',
+      'Error: Could not read directory "/nonexistent". Check path and permissions.',
     );
   });
 
   it('should handle deep folder structure within limits', async () => {
-    const structure = await getFolderStructure('/testroot/deepFolders', {
+    const structure = await getFolderStructure(path.normalize('/testroot/deepFolders'), {
       maxItems: 10,
     });
-    const expected = `
-Showing up to 10 items (files + folders).
-
-/testroot/deepFolders/
-└───level1/
-    └───level2/
-        └───level3/
-            └───file.txt
-`.trim();
+    const expected = `\nShowing up to 10 items (files + folders).\n\n${path.normalize('/testroot/deepFolders')}${path.sep}\n└───level1/\n    └───level2/\n        └───level3/\n            └───file.txt\n`.trim();
     expect(structure.trim()).toBe(expected);
   });
 
   it('should truncate deep folder structure if maxItems is small', async () => {
-    const structure = await getFolderStructure('/testroot/deepFolders', {
+    const structure = await getFolderStructure(path.normalize('/testroot/deepFolders'), {
       maxItems: 3,
     });
-    const expected = `
-Showing up to 3 items (files + folders).
-
-/testroot/deepFolders/
-└───level1/
-    └───level2/
-        └───level3/
-`.trim();
+    const expected = `\nShowing up to 3 items (files + folders).\n\n${path.normalize('/testroot/deepFolders')}${path.sep}\n└───level1/\n    └───level2/\n        └───level3/\n`.trim();
     expect(structure.trim()).toBe(expected);
   });
 });
@@ -289,8 +204,8 @@ describe('getFolderStructure gitignore', () => {
     (path.resolve as Mock).mockImplementation((str: string) => str);
 
     (fsPromises.readdir as Mock).mockImplementation(async (p) => {
-      const path = p.toString();
-      if (path === '/test/project') {
+      const dirPath = p.toString();
+      if (dirPath === path.normalize('/test/project')) {
         return [
           createDirent('file1.txt', 'file'),
           createDirent('node_modules', 'dir'),
@@ -298,10 +213,10 @@ describe('getFolderStructure gitignore', () => {
           createDirent('.gemini', 'dir'),
         ] as any;
       }
-      if (path === '/test/project/node_modules') {
+      if (dirPath === path.normalize('/test/project/node_modules')) {
         return [createDirent('some-package', 'dir')] as any;
       }
-      if (path === '/test/project/.gemini') {
+      if (dirPath === path.normalize('/test/project/.gemini')) {
         return [
           createDirent('config.yaml', 'file'),
           createDirent('logs.json', 'file'),
@@ -311,8 +226,8 @@ describe('getFolderStructure gitignore', () => {
     });
 
     (fs.readFileSync as Mock).mockImplementation((p) => {
-      const path = p.toString();
-      if (path === '/test/project/.gitignore') {
+      const filePath = p.toString();
+      if (filePath === path.normalize('/test/project/.gitignore')) {
         return 'ignored.txt\nnode_modules/\n.gemini/\n!/.gemini/config.yaml';
       }
       return '';
@@ -322,8 +237,8 @@ describe('getFolderStructure gitignore', () => {
   });
 
   it('should ignore files and folders specified in .gitignore', async () => {
-    const fileService = new FileDiscoveryService('/test/project');
-    const structure = await getFolderStructure('/test/project', {
+    const fileService = new FileDiscoveryService(path.normalize('/test/project'));
+    const structure = await getFolderStructure(path.normalize('/test/project'), {
       fileService,
     });
     expect(structure).not.toContain('ignored.txt');
@@ -332,8 +247,8 @@ describe('getFolderStructure gitignore', () => {
   });
 
   it('should not ignore files if respectGitIgnore is false', async () => {
-    const fileService = new FileDiscoveryService('/test/project');
-    const structure = await getFolderStructure('/test/project', {
+    const fileService = new FileDiscoveryService(path.normalize('/test/project'));
+    const structure = await getFolderStructure(path.normalize('/test/project'), {
       fileService,
       respectGitIgnore: false,
     });

@@ -204,7 +204,7 @@ export class IDEServer {
 const createMcpServer = () => {
   const server = new McpServer(
     {
-      name: 'dg-cli-companion-mcp-server',
+      name: 'dg-cli-vscode-mcp-server',
       version: '1.0.0',
     },
     { capabilities: { logging: {} } },

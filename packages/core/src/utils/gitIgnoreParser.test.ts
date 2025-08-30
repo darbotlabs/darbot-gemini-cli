@@ -68,7 +68,7 @@ node_modules/
         ) {
           return 'temp/\n*.tmp';
         }
-        throw new Error('ENOENT');
+        return '';
       });
 
       parser.loadGitRepoPatterns();
@@ -83,7 +83,7 @@ node_modules/
         if (filePath === path.join(mockProjectRoot, '.geminiignore')) {
           return 'temp/\n*.tmp';
         }
-        throw new Error('ENOENT');
+        return '';
       });
 
       parser.loadPatterns('.geminiignore');

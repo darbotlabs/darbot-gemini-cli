@@ -24,6 +24,8 @@ import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import cliPkgJson from '../packages/cli/package.json' with { type: 'json' };
 
+const cliPackageDir = join('packages', 'cli');
+
 const argv = yargs(hideBin(process.argv))
   .option('s', {
     alias: 'skip-npm-install-build',
@@ -73,7 +75,7 @@ const customDockerfile = argv.f;
 
 if (!baseImage?.length) {
   console.warn(
-    'No default image tag specified in gemini-cli/packages/cli/package.json',
+    'No default image tag specified in dg-cli/packages/cli/package.json',
   );
 }
 
@@ -82,23 +84,22 @@ if (!argv.s) {
   execSync('npm run build --workspaces', { stdio: 'inherit' });
 }
 
-console.log('packing @google/gemini-cli ...');
-const cliPackageDir = join('packages', 'cli');
-rmSync(join(cliPackageDir, 'dist', 'google-gemini-cli-*.tgz'), { force: true });
+console.log('packing @darbotlabs/dg-cli ...');
+rmSync(join(cliPackageDir, 'dist', 'darbot-dg-cli-*.tgz'), { force: true });
 execSync(
-  `npm pack -w @google/gemini-cli --pack-destination ./packages/cli/dist`,
+  `npm pack -w @darbotlabs/dg-cli --pack-destination ./packages/cli/dist`,
   {
     stdio: 'ignore',
   },
 );
 
-console.log('packing @google/gemini-cli-core ...');
+console.log('packing @darbotlabs/dg-cli-core ...');
 const corePackageDir = join('packages', 'core');
-rmSync(join(corePackageDir, 'dist', 'google-gemini-cli-core-*.tgz'), {
+rmSync(join(corePackageDir, 'dist', 'darbot-dg-cli-core-*.tgz'), {
   force: true,
 });
 execSync(
-  `npm pack -w @google/gemini-cli-core --pack-destination ./packages/core/dist`,
+  `npm pack -w @darbotlabs/dg-cli-core --pack-destination ./packages/core/dist`,
   { stdio: 'ignore' },
 );
 
@@ -107,11 +108,11 @@ const packageVersion = JSON.parse(
 ).version;
 
 chmodSync(
-  join(cliPackageDir, 'dist', `google-gemini-cli-${packageVersion}.tgz`),
+  join(cliPackageDir, 'dist', `darbot-dg-cli-${packageVersion}.tgz`),
   0o755,
 );
 chmodSync(
-  join(corePackageDir, 'dist', `google-gemini-cli-core-${packageVersion}.tgz`),
+  join(corePackageDir, 'dist', `darbot-dg-cli-core-${packageVersion}.tgz`),
   0o755,
 );
 

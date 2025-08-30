@@ -96,7 +96,7 @@ describe('restoreCommand', () => {
         content: 'No restorable tool calls found.',
       });
       expect(mockFsPromises.mkdir).toHaveBeenCalledWith(
-        '/tmp/gemini/checkpoints',
+        require('path').join('/tmp/gemini/checkpoints'),
         {
           recursive: true,
         },

@@ -9,7 +9,7 @@ import {
   Config,
   getMCPDiscoveryState,
   getMCPServerStatus,
-  IDE_SERVER_NAME,
+  DG_CLI_VSCODE_SERVER_NAME,
   MCPDiscoveryState,
   MCPServerStatus,
 } from '@darbotlabs/dg-cli-core';
@@ -24,7 +24,7 @@ import { glob } from 'glob';
 import * as path from 'path';
 
 const VSCODE_COMMAND = process.platform === 'win32' ? 'code.cmd' : 'code';
-const VSCODE_COMPANION_EXTENSION_FOLDER = 'vscode-ide-companion';
+const VSCODE_COMPANION_EXTENSION_FOLDER = 'dg-cli-vscode';
 
 function isVSCodeInstalled(): boolean {
   try {
@@ -53,7 +53,7 @@ export const ideCommand = (config: Config | null): SlashCommand | null => {
         name: 'status',
         description: 'check status of IDE integration',
         action: (_context: CommandContext): SlashCommandActionReturn => {
-          const status = getMCPServerStatus(IDE_SERVER_NAME);
+          const status = getMCPServerStatus(DG_CLI_VSCODE_SERVER_NAME);
           const discoveryState = getMCPDiscoveryState();
           switch (status) {
             case MCPServerStatus.CONNECTED:
@@ -145,7 +145,7 @@ export const ideCommand = (config: Config | null): SlashCommand | null => {
             context.ui.addItem(
               {
                 type: 'info',
-                text: 'VS Code companion extension installed successfully. Restart gemini-cli in a fresh terminal window.',
+                text: 'VS Code companion extension installed successfully. Restart dg-cli in a fresh terminal window.',
               },
               Date.now(),
             );

@@ -125,7 +125,7 @@ describe('GrepTool', () => {
       expect(result.llmContent).toContain('File: fileA.txt');
       expect(result.llmContent).toContain('L1: hello world');
       expect(result.llmContent).toContain('L2: second line with world');
-      expect(result.llmContent).toContain('File: sub/fileC.txt');
+      expect(result.llmContent).toContain(`File: ${path.join('sub', 'fileC.txt')}`);
       expect(result.llmContent).toContain('L1: another world in sub dir');
       expect(result.returnDisplay).toBe('Found 3 matches');
     });
@@ -253,7 +253,7 @@ describe('GrepTool', () => {
       expect(grepTool.getDescription(params)).toContain(
         "'testPattern' in *.ts within",
       );
-      expect(grepTool.getDescription(params)).toContain('src/app');
+      expect(grepTool.getDescription(params)).toContain(path.join('src', 'app'));
     });
 
     it('should use ./ for root path in description', () => {

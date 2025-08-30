@@ -224,8 +224,7 @@ export class ClearcutLogger {
         value: this.config?.getSessionId() ?? '',
       },
       {
-        gemini_cli_key:
-          EventMetadataKey.DG_CLI_START_SESSION_EMBEDDING_MODEL,
+        gemini_cli_key: EventMetadataKey.DG_CLI_START_SESSION_EMBEDDING_MODEL,
         value: event.embedding_model,
       },
       {
@@ -241,8 +240,7 @@ export class ClearcutLogger {
         value: event.approval_mode,
       },
       {
-        gemini_cli_key:
-          EventMetadataKey.DG_CLI_START_SESSION_API_KEY_ENABLED,
+        gemini_cli_key: EventMetadataKey.DG_CLI_START_SESSION_API_KEY_ENABLED,
         value: event.api_key_enabled.toString(),
       },
       {
@@ -270,8 +268,7 @@ export class ClearcutLogger {
         value: event.vertex_ai_enabled.toString(),
       },
       {
-        gemini_cli_key:
-          EventMetadataKey.DG_CLI_START_SESSION_TELEMETRY_ENABLED,
+        gemini_cli_key: EventMetadataKey.DG_CLI_START_SESSION_TELEMETRY_ENABLED,
         value: event.telemetry_enabled.toString(),
       },
       {
@@ -392,18 +389,15 @@ export class ClearcutLogger {
         value: JSON.stringify(event.error),
       },
       {
-        gemini_cli_key:
-          EventMetadataKey.DG_CLI_API_RESPONSE_INPUT_TOKEN_COUNT,
+        gemini_cli_key: EventMetadataKey.DG_CLI_API_RESPONSE_INPUT_TOKEN_COUNT,
         value: JSON.stringify(event.input_token_count),
       },
       {
-        gemini_cli_key:
-          EventMetadataKey.DG_CLI_API_RESPONSE_OUTPUT_TOKEN_COUNT,
+        gemini_cli_key: EventMetadataKey.DG_CLI_API_RESPONSE_OUTPUT_TOKEN_COUNT,
         value: JSON.stringify(event.output_token_count),
       },
       {
-        gemini_cli_key:
-          EventMetadataKey.DG_CLI_API_RESPONSE_CACHED_TOKEN_COUNT,
+        gemini_cli_key: EventMetadataKey.DG_CLI_API_RESPONSE_CACHED_TOKEN_COUNT,
         value: JSON.stringify(event.cached_content_token_count),
       },
       {
@@ -412,8 +406,7 @@ export class ClearcutLogger {
         value: JSON.stringify(event.thoughts_token_count),
       },
       {
-        gemini_cli_key:
-          EventMetadataKey.DG_CLI_API_RESPONSE_TOOL_TOKEN_COUNT,
+        gemini_cli_key: EventMetadataKey.DG_CLI_API_RESPONSE_TOOL_TOKEN_COUNT,
         value: JSON.stringify(event.tool_token_count),
       },
       {
